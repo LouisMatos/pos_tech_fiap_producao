@@ -16,7 +16,7 @@ spring:
     allow-bean-definition-overriding: true   
   data:
     mongodb:
-      database: jlapp-pagamento
+      database: jlapp-producao
       uri: mongodb://root:MongoDB2019!@localhost:27018
       authentication-database: admin
       auto-index-creation: true
@@ -39,6 +39,7 @@ mq:
     pedido:
       cozinha: pedido-cozinha-mq
     cozinha: cozinha-mq
+    statuspedidos: status-pedidos-mq
   exchanges:
     direct: direct-exchange
   routing:
@@ -46,3 +47,4 @@ mq:
       pedido:
         cozinha: pedido-cozinha-key
       cozinha: cozinha-key
+      statuspedidos: status-pedidos-key

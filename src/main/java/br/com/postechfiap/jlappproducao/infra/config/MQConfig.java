@@ -17,11 +17,17 @@ public class MQConfig {
   @Value("${mq.queues.cozinha}")
   private String cozinhaQueue;
 
+  @Value("${mq.queues.statuspedidos}")
+  private String statusPedidoQueue;
+
   @Value("${mq.exchanges.direct}")
   private String directExchange;
 
   @Value("${mq.routing.key.pedido.cozinha}")
   private String pedidoCozinhaRoutingKey;
+
+  @Value("${mq.routing.key.statuspedidos}")
+  private String statusPedidoRoutingKey;
 
   @Value("${mq.routing.key.cozinha}")
   private String cozinhaRoutingKey;
@@ -37,6 +43,11 @@ public class MQConfig {
   }
 
   @Bean
+  public Queue statusPedidoQueue() {
+    return new Queue(statusPedidoQueue, true);
+  }
+
+  @Bean
   DirectExchange exchange() {
     return new DirectExchange(directExchange);
   }
@@ -49,6 +60,11 @@ public class MQConfig {
   @Bean
   Binding cozinhaBinding(Queue cozinhaQueue, DirectExchange exchange) {
     return BindingBuilder.bind(cozinhaQueue).to(exchange).with(cozinhaRoutingKey);
+  }
+
+  @Bean
+  Binding statusPedidoBinding(Queue statusPedidoQueue, DirectExchange exchange) {
+    return BindingBuilder.bind(statusPedidoQueue).to(exchange).with(statusPedidoRoutingKey);
   }
 
 }
