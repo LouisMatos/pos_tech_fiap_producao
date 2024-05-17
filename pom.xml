@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.postechfiap</groupId>
-	<artifactId>jlapp-producao</artifactId>
+	<artifactId>jlapp-pedido</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>jlapp-producao</name>
-	<description>Aplicação jlapp modulo produção</description>
+	<name>jlapp-pedido</name>
+	<description>Aplicação jlapp modulo pedido</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
@@ -33,6 +33,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -65,6 +69,13 @@
 			<artifactId>spring-rabbit-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
