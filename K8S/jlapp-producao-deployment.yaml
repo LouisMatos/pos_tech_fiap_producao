@@ -43,22 +43,14 @@ spec:
         env:
           - name: JAVA_OPTS
             value: "-server -Xmx1536M -Xms756M -Xss128m"
-          - name: DB_USERNAME
-            value: root
-          - name: DB_PASSWORD
-            value: MongoDB2019!
-          - name: DB_HOST
-            value: "mongodb"
-          - name: DB_PORT
-            value: "27017"
-          - name: MONGO_DATABASE
-            value: "jlapp-producao"
-          - name: "MONGO_AUTHENTICATION"
-            value: "admin"
-          - name: "MONGO_AUTO_INDEX_CREATION"
+          - name: SPRING_DATA_DATABASE
+            value: jlapp-producao
+          - name: SPRING_DATA_MONGODB_URI
+            value: mongodb://root:root@mongodb:27017/jlapp-producao?socketTimeoutMS=1000000&authSource=admin
+          - name: MANAGEMENT_HEALTH_MONGO_ENABLED
+            value: "false"
+          - name: ENDPOINTS_MONGO_ENABLED
             value: "true"
-          - name: "MONGO_REPOSITORIES_TYPE"
-            value: "auto"
           - name: SPRING_RABBITMQ_HOST
             value: rabbitmq-deployment
           - name: SPRING_RABBITMQ_PORT

@@ -6,6 +6,6 @@ spec:
   selector:
     app: jlapp-producao
   ports:
-  - port: 8073
-    targetPort: 8073
+  - port: 8074
+    targetPort: 8074
   type: LoadBalancer
