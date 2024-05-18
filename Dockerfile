@@ -21,5 +21,5 @@ RUN /bin/sh mvnw package -DskipTests dependency:resolve
 
 WORKDIR /app/target
 
-ENTRYPOINT java -jar jlapp-producao-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","jlapp-producao-0.0.1-SNAPSHOT.jar"]
 

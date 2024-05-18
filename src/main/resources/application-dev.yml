@@ -10,18 +10,20 @@ springdoc:
   api-docs:
     path: "/api-docs"
 
+
 spring:
   main:
     banner-mode: "CONSOLE"   # por algum motivo tem que ser entre aspas duplas
     allow-bean-definition-overriding: true   
   data:
     mongodb:
-      database: jlapp-producao
-      uri: mongodb://root:MongoDB2019!@localhost:27018
-      authentication-database: admin
-      auto-index-creation: true
-      repositories:
-        type: auto
+      uri: mongodb://root:MongoDB2019!@localhost:27018/jlapp-producao?authSource=admin
+#      database: ${MONGO_DATABASE:jlapp-producao}
+#      uri: mongodb://${DB_USERNAME:root}:${DB_PASSWORD:MongoDB2019!}@${DB_HOST:localhost}:${DB_PORT:27018}/${MONGO_DATABASE:jlapp-producao}?authSource=${MONGO_AUTHENTICATION:admin}
+#      authentication-database: ${MONGO_AUTHENTICATION:admin}
+#      auto-index-creation: ${MONGO_AUTO_INDEX_CREATION:true}
+#      repositories:
+#        type: ${MONGO_REPOSITORIES_TYPE:auto}
   
   rabbitmq:
     host: localhost
