@@ -19,20 +19,6 @@ public class Producao {
   private String jsonPedido;
 
 
-  public Producao() {
-
-  }
-
-  public Producao(Long id, String numeroPedido, StatusPagamento statusPagamento, Estado estado,
-      LocalDateTime dataPedido, String jsonPedido) {
-    this.id = id;
-    this.numeroPedido = numeroPedido;
-    this.statusPagamento = statusPagamento;
-    this.estado = estado;
-    this.dataPedido = dataPedido;
-    this.jsonPedido = jsonPedido;
-  }
-
   public Long getId() {
     return id;
   }
