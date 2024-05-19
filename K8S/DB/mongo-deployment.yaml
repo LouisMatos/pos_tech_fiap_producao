@@ -1,34 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb
+  name: mongodb-producao-deployment
 spec:
   selector:
     matchLabels:
-      app: mongodb
+      app: mongodb-producao
   template:
     metadata:
       labels:
-        app: mongodb
+        app: mongodb-producao
     spec:
       containers:
-      - name: mongodb
-        image: mongo
+      - name: mongodb-producao
+        image: mongo 
+        command: ["/bin/sh"]
+        args: ["-c" , "mongod --bind_ip_all --port 27015"]
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
           value: root
         - name: MONGO_INITDB_ROOT_PASSWORD
           value: root
         - name: MONGO_INITDB_USERNAME
-          value: root
+          value: teste
         - name: MONGO_INITDB_PASSWORD
-          value: root
+          value: teste
         ports:
-        - containerPort: 27017
+        - containerPort: 27015
         volumeMounts:
-        - name: mongodb-storage
-          mountPath: /data/db
+        - name: mongo-initdb
+          mountPath: /docker-entrypoint-initdb.d
+        - name: mongodb-producao-storage
+          mountPath: /data/db_2
       volumes:
-      - name: mongodb-storage
+      - name: mongo-initdb
+        configMap:
+          name: mongo-initdb
+      - name: mongodb-producao-storage
         persistentVolumeClaim:
-          claimName: mongodb-pvc
+          claimName: mongodb-producao-pvc
