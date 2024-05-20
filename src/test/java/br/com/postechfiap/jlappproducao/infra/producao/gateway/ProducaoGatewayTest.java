@@ -39,11 +39,11 @@ public class ProducaoGatewayTest {
   @Test
   public void shouldInsertProducaoDTO() {
     ProducaoDTO producaoDTO = new ProducaoDTO();
-    when(producaoRepository.insert(any(ProducaoSchema.class))).thenReturn(new ProducaoSchema());
+    when(producaoRepository.save(any(ProducaoSchema.class))).thenReturn(new ProducaoSchema());
 
     producaoGateway.inserir(producaoDTO);
 
-    verify(producaoRepository, times(1)).insert(any(ProducaoSchema.class));
+    verify(producaoRepository, times(1)).save(any(ProducaoSchema.class));
     verify(log, times(1)).info(anyString());
   }
 

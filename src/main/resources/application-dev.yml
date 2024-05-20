@@ -10,21 +10,29 @@ springdoc:
   api-docs:
     path: "/api-docs"
 
-
+      
 spring:
   main:
     banner-mode: "CONSOLE"   # por algum motivo tem que ser entre aspas duplas
     allow-bean-definition-overriding: true   
-  data:
-    mongodb:
-      uri: mongodb://root:MongoDB2019!@localhost:27018/jlapp-producao?authSource=admin
-#      database: ${MONGO_DATABASE:jlapp-producao}
-#      uri: mongodb://${DB_USERNAME:root}:${DB_PASSWORD:MongoDB2019!}@${DB_HOST:localhost}:${DB_PORT:27018}/${MONGO_DATABASE:jlapp-producao}?authSource=${MONGO_AUTHENTICATION:admin}
-#      authentication-database: ${MONGO_AUTHENTICATION:admin}
-#      auto-index-creation: ${MONGO_AUTO_INDEX_CREATION:true}
-#      repositories:
-#        type: ${MONGO_REPOSITORIES_TYPE:auto}
-  
+  jpa:
+    show-sql: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+          minPoolSize: 5
+          time_zone: America/Sao_Paulo
+        timezone:
+          default_storage: NORMALIZE_UTC
+          
   rabbitmq:
     host: localhost
     port: 5672
@@ -34,6 +42,25 @@ spring:
     listener:
       simple:
         default-requeue-rejected: false
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_producao?useSSL=false&serverTimezone=UTC
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: teste
+    password: teste12345
+    type: com.zaxxer.hikari.HikariDataSource
+    initialize: true
+    hikari:
+      pool-name: ps-demo
+      maximum-pool-size: 20
+      max-lifetime: 1800000
+      idle-timeout: 30000
+    tomcat:
+      initial-size: 5
+      max-wait: 20000
+      max-active: 50
+      max-idle: 15
+      min-idle: 8
 
 
 mq:

@@ -2,67 +2,45 @@ version: '3'
 
 services:
 
-  mongo-express:
-    image: mongo-express
-    depends_on:
-      - mongo
-    restart: always
-    ports:
-      - 8082:8081
+  mysql:
+    image: mysql:5.7
     environment:
-      ME_CONFIG_BASICAUTH_USERNAME: jlapp
-      ME_CONFIG_BASICAUTH_PASSWORD: MongoExpress2019!
-      ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: MongoDB2019!
-      ME_CONFIG_MONGODB_SERVER: mongo
-    links:
-      - mongo
-    networks:
-      - mongo-compose-network-v2
-    deploy:
-      resources: 
-        limits:
-          cpus: '0.50'
-          memory: 256M
-
-  mongo:
-    image: mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: MongoDB2019!
+      MYSQL_ROOT_PASSWORD: teste12345!
+      MYSQL_DATABASE: db_producao
+      MYSQL_USER: teste
+      MYSQL_PASSWORD: teste12345
     ports:
-      - "27017:27017"
+      - "3306:3306"
     volumes:
-      - mongo-volume-v2:/data/db
+      - mysql-volume-v2:/var/lib/mysql
     networks:
-      - mongo-compose-network-v2
+      - mysql-compose-network-v2
     deploy:
-      resources: 
+      resources:
         limits:
           cpus: '0.50'
           memory: 256M
           
-#  rabbitmq:
-#    image: rabbitmq:3-management
-#    environment:
-#      RABBITMQ_DEFAULT_USER: luis
-#      RABBITMQ_DEFAULT_PASS: teste123
-#    ports:
-#      - "5672:5672"
-#      - "15672:15672"
-#    deploy:
-#      resources: 
-#        limits:
-#          cpus: '0.50'
-#          memory: 256M
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: luis
+      RABBITMQ_DEFAULT_PASS: teste123
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    deploy:
+      resources: 
+        limits:
+          cpus: '0.50'
+          memory: 256M
 
 
 
 volumes:
-  mongo-volume-v2:
+  mysql-volume-v2:
     driver: local
 
 networks:
-  mongo-compose-network-v2:
+  mysql-compose-network-v2:
     driver: bridge

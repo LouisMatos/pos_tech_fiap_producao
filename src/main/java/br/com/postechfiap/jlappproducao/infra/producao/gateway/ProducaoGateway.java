@@ -23,7 +23,7 @@ public class ProducaoGateway implements IProducaoGateway {
   @Override
   public ProducaoDTO inserir(ProducaoDTO producaoDTO) {
     ProducaoSchema producaoSchema =
-        producaoRepository.insert(ProducaoMapper.toProducaoSchema(producaoDTO));
+        producaoRepository.save(ProducaoMapper.toProducaoSchema(producaoDTO));
 
     log.info("Cadastrando novo pedido para a produção na base de dados!");
     return ProducaoMapper.toProducaoDTO(producaoSchema);

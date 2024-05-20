@@ -5,13 +5,13 @@ server:
 
 spring:
   profiles:
-    active: ${APP_PROFILE:dev}
+    active: ${APP_PROFILE:local}
   devtools:
     add-properties: false
   main: 
     allow-circular-references: true
   application:
-    name: jlapp-pagamento
+    name: jlapp-producao
 
 
 management: 

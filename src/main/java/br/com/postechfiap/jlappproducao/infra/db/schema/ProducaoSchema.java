@@ -1,10 +1,14 @@
 package br.com.postechfiap.jlappproducao.infra.db.schema;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import br.com.postechfiap.jlappproducao.domain.enums.Estado;
 import br.com.postechfiap.jlappproducao.domain.enums.StatusPagamento;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,13 +16,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "producao")
-public class ProducaoSchema {
+@Entity(name = "producao")
+public class ProducaoSchema implements Serializable {
+
+  private static final long serialVersionUID = 5289878346047956608L;
 
   @Id
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-  private Long pedidoId;
+  private int pedidoId;
 
   private String numeroPedido;
 
@@ -28,6 +35,7 @@ public class ProducaoSchema {
 
   private LocalDateTime dataPedido;
 
+  @Column(columnDefinition = "TEXT", length = 4000)
   private String jsonPedido;
 
 }
