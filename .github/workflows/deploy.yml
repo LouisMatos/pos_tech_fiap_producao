@@ -74,9 +74,6 @@ jobs:
           sudo ./aws/install --update
           aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name jlapp-cluster
 
-      - name: Deploy Database
-        run: |
-          kubectl apply -f k8s/DB
       - name: Deploy Service
         run: |
           kubectl apply -f k8s/
