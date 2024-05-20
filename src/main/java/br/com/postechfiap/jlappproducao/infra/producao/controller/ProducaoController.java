@@ -1,6 +1,7 @@
 package br.com.postechfiap.jlappproducao.infra.producao.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,14 @@ public class ProducaoController {
   public ProducaoController(ProducaoUseCase producaoUseCase, Logger log) {
     this.producaoUseCase = producaoUseCase;
     this.log = log;
+  }
+
+  @GetMapping("/{numero_pedido}")
+  public ResponseEntity<ProducaoDTO> buscaPedidoNumeroPedido(
+      @PathVariable final String numero_pedido) {
+    log.info("Buscando pedido de produção pelo número do pedido: {}", numero_pedido);
+    ProducaoDTO dto = producaoUseCase.buscaPedidoNumeroPedido(numero_pedido);
+    return ResponseEntity.ok(dto);
   }
 
   @PatchMapping("/{numero_pedido}")

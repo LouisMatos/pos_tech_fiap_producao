@@ -1,5 +1,6 @@
 package br.com.postechfiap.jlappproducao.usecase.producao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -13,18 +14,16 @@ import br.com.postechfiap.jlappproducao.shared.logger.log.Logger;
 @Service
 public class ProducaoUseCase {
 
-  private final IProducaoGateway producaoGateway;
+  @Autowired
+  private IProducaoGateway producaoGateway;
 
-  private final PedidoPublisher pedidoPublisher;
+  @Autowired
+  private PedidoPublisher pedidoPublisher;
 
-  private final Logger log;
+  @Autowired
+  private Logger log;
 
-  public ProducaoUseCase(IProducaoGateway producaoGateway, Logger log,
-      PedidoPublisher pedidoPublisher) {
-    this.producaoGateway = producaoGateway;
-    this.pedidoPublisher = pedidoPublisher;
-    this.log = log;
-  }
+
 
   public boolean processarPedido(String message) {
     ObjectMapper mapper = new ObjectMapper();

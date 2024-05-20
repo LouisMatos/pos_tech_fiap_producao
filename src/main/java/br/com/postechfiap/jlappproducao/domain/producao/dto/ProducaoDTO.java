@@ -7,9 +7,9 @@ import br.com.postechfiap.jlappproducao.domain.enums.StatusPagamento;
 
 public class ProducaoDTO {
 
-  private String idMongoDB;
+  private Long idMongoDB;
 
-  private Long id;
+  private int id;
 
   private String numeroPedido;
 
@@ -21,19 +21,19 @@ public class ProducaoDTO {
 
   private String jsonPedido;
 
-  public String getIdMongoDB() {
+  public Long getIdMongoDB() {
     return idMongoDB;
   }
 
-  public void setIdMongoDB(String idMongoDB) {
+  public void setIdMongoDB(Long idMongoDB) {
     this.idMongoDB = idMongoDB;
   }
 
-  public Long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
