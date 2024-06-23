@@ -17,13 +17,13 @@ spec:
         image: testeluismatos/jlapp-producao-eks:latest
         ports:
         - containerPort: 8074
-        resources:
-          requests:
-            cpu: 600m
-            memory: 756Mi
-          limits:
-            cpu: 1000m
-            memory: 1536Mi
+        # resources:
+        #   requests:
+        #     cpu: 200m
+        #     memory: 256Mi
+        #   limits:
+        #     cpu: 600m
+        #     memory: 512Mi
         readinessProbe:
           httpGet:
             path: /actuator/health
@@ -42,15 +42,7 @@ spec:
           periodSeconds: 20
         env:
           - name: JAVA_OPTS
-            value: "-server -Xmx1536M -Xms756M -Xss128m"
-          - name: SPRING_DATA_DATABASE
-            value: jlapp-producao
-          - name: SPRING_DATA_MONGODB_URI
-            value: mongodb://teste:teste@mongodb-producao-service:27015/jlapp-producao?socketTimeoutMS=1000000&authSource=admin
-          - name: MANAGEMENT_HEALTH_MONGO_ENABLED
-            value: "false"
-          - name: ENDPOINTS_MONGO_ENABLED
-            value: "true"
+            value: "-server -Xmx1024M -Xms512M -Xss128m -XX:+UseParallelGC -XX:MaxRAMPercentage=75 -XX:ActiveProcessorCount=2 -XX:+UnlockExperimentalVMOptions"
           - name: SPRING_RABBITMQ_HOST
             value: rabbitmq-deployment
           - name: SPRING_RABBITMQ_PORT
