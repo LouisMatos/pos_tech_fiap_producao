@@ -8,4 +8,4 @@ spec:
   ports:
   - port: 8074
     targetPort: 8074
-  type: LoadBalancer
+
