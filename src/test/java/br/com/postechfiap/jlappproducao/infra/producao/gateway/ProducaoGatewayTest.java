@@ -20,7 +20,7 @@ import br.com.postechfiap.jlappproducao.infra.db.schema.ProducaoSchema;
 import br.com.postechfiap.jlappproducao.shared.exception.NotFoundException;
 import br.com.postechfiap.jlappproducao.shared.logger.log.Logger;
 
-public class ProducaoGatewayTest {
+class ProducaoGatewayTest {
 
   @Mock
   private ProducaoRepository producaoRepository;
@@ -37,7 +37,7 @@ public class ProducaoGatewayTest {
   }
 
   @Test
-  public void shouldInsertProducaoDTO() {
+  void shouldInsertProducaoDTO() {
     ProducaoDTO producaoDTO = new ProducaoDTO();
     when(producaoRepository.save(any(ProducaoSchema.class))).thenReturn(new ProducaoSchema());
 
@@ -48,7 +48,7 @@ public class ProducaoGatewayTest {
   }
 
   @Test
-  public void shouldThrowNotFoundExceptionWhenPedidoNotFound() {
+  void shouldThrowNotFoundExceptionWhenPedidoNotFound() {
     when(producaoRepository.findByNumeroPedido(anyString())).thenReturn(Optional.empty());
 
     assertThrows(NotFoundException.class, () -> producaoGateway.buscaPedidoNumeroPedido("123"));
@@ -57,7 +57,7 @@ public class ProducaoGatewayTest {
   }
 
   @Test
-  public void shouldUpdateProducaoDTO() {
+  void shouldUpdateProducaoDTO() {
     ProducaoDTO producaoDTO = new ProducaoDTO();
     when(producaoRepository.save(any())).thenReturn(new ProducaoSchema());
 
@@ -69,9 +69,8 @@ public class ProducaoGatewayTest {
 
 
   @Test
-  public void shouldReturnProducaoDTOWhenPedidoIsFound() {
+  void shouldReturnProducaoDTOWhenPedidoIsFound() {
     String numeroPedido = "123";
-    ProducaoDTO producaoDTO = new ProducaoDTO();
     when(producaoRepository.findByNumeroPedido(anyString()))
         .thenReturn(Optional.of(new ProducaoSchema()));
 
@@ -82,7 +81,7 @@ public class ProducaoGatewayTest {
   }
 
   @Test
-  public void shouldThrowNotFoundExceptionWhenPedidoIsNotFound() {
+  void shouldThrowNotFoundExceptionWhenPedidoIsNotFound() {
     String numeroPedido = "123";
     when(producaoRepository.findByNumeroPedido(anyString())).thenReturn(Optional.empty());
 
