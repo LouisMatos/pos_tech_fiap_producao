@@ -18,13 +18,13 @@ spec:
         image: jlapp-producao
         ports:
         - containerPort: 8074
-        # resources:
-        #   requests:
-        #     cpu: 200m
-        #     memory: 256Mi
-        #   limits:
-        #     cpu: 600m
-        #     memory: 512Mi
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 600m
+            memory: 512Mi
         readinessProbe:
           httpGet:
             path: /actuator/health
@@ -54,8 +54,6 @@ spec:
             value: com.mysql.cj.jdbc.Driver
           - name: SPRING_JPA_HIBERNATE_DDL_AUTO
             value: validate
-          - name: SPRING_PROFILES_ACTIVE
-            value: dev
           - name: SPRING_RABBITMQ_HOST
             valueFrom: { secretKeyRef: { name: shared-mq-secret, key: host } }
           - name: SPRING_RABBITMQ_PORT
