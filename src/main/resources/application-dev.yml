@@ -65,15 +65,11 @@ spring:
 
 mq:
   queues:
-    pedido:
-      cozinha: pedido-cozinha-mq
     cozinha: cozinha-mq
     statuspedidos: status-pedidos-mq
   exchanges:
     direct: direct-exchange
   routing:
     key:
-      pedido:
-        cozinha: pedido-cozinha-key
       cozinha: cozinha-key
       statuspedidos: status-pedidos-key
