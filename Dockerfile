@@ -5,15 +5,17 @@ WORKDIR /app
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
-COPY src src
 
 RUN chmod +x mvnw
 RUN chmod +x .mvn
 
 # clean up the file
 RUN sed -i 's/\r$//' mvnw
-# run with the SH path
-RUN /bin/sh mvnw package -DskipTests dependency:resolve
+# camada de dependencias: so invalida quando o pom.xml muda
+RUN /bin/sh mvnw -q dependency:go-offline
+
+COPY src src
+RUN /bin/sh mvnw -q package -DskipTests
 
 FROM eclipse-temurin:21-jre
 

@@ -52,7 +52,7 @@ spring:
     initialize: true
     hikari:
       pool-name: ps-demo
-      maximum-pool-size: 20
+      maximum-pool-size: 5
       max-lifetime: 1800000
       idle-timeout: 30000
     tomcat:
