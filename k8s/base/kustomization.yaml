@@ -6,12 +6,8 @@ resources:
   - jlapp-producao-service.yaml
   - service-account.yaml
   - hpa.yaml
-  - nginx-config.yaml
-  - nginx-deployment.yaml
-  - nginx-service.yaml
-  - mq/rabbitmq-deployment.yaml
-  - mq/rabbitmq-service.yaml
-  - Metrics/components.yaml
+  - pdb.yaml
+  - ingress.yaml
 
 images:
   - name: jlapp-producao

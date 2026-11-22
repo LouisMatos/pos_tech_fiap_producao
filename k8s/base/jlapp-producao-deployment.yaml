@@ -7,39 +7,49 @@ spec:
     matchLabels:
       app: jlapp-producao
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   template:
     metadata:
       labels:
         app: jlapp-producao
     spec:
       serviceAccountName: producao-sa
+      terminationGracePeriodSeconds: 45
       containers:
       - name: jlapp-producao
         image: jlapp-producao
         ports:
         - containerPort: 8074
-        # resources:
-        #   requests:
-        #     cpu: 200m
-        #     memory: 256Mi
-        #   limits:
-        #     cpu: 600m
-        #     memory: 512Mi
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 10"]
+        resources:
+          requests:
+            cpu: 200m
+            memory: 384Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        startupProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8074
+          periodSeconds: 5
+          failureThreshold: 24
         readinessProbe:
           httpGet:
-            path: /actuator/health
+            path: /actuator/health/readiness
             port: 8074
-          initialDelaySeconds: 15
-          successThreshold: 1
-          failureThreshold: 3
-          periodSeconds: 10
+          periodSeconds: 5
         livenessProbe:
           httpGet:
-            path: /actuator/health
+            path: /actuator/health/liveness
             port: 8074
-          initialDelaySeconds: 20
-          successThreshold: 1
-          failureThreshold: 3
           periodSeconds: 20
         env:
           - name: JAVA_OPTS
@@ -54,13 +64,13 @@ spec:
             value: com.mysql.cj.jdbc.Driver
           - name: SPRING_JPA_HIBERNATE_DDL_AUTO
             value: validate
-          - name: SPRING_PROFILES_ACTIVE
-            value: dev
           - name: SPRING_RABBITMQ_HOST
             valueFrom: { secretKeyRef: { name: shared-mq-secret, key: host } }
           - name: SPRING_RABBITMQ_PORT
-            value: "5671"
+            valueFrom: { secretKeyRef: { name: shared-mq-secret, key: port } }
           - name: SPRING_RABBITMQ_USERNAME
             valueFrom: { secretKeyRef: { name: shared-mq-secret, key: username } }
           - name: SPRING_RABBITMQ_PASSWORD
             valueFrom: { secretKeyRef: { name: shared-mq-secret, key: password } }
+          - name: SPRING_RABBITMQ_SSL_ENABLED
+            value: "true"
