@@ -1,5 +1,7 @@
 package br.com.postechfiap.jlappproducao.domain.enums;
 
+import br.com.postechfiap.jlappproducao.shared.exception.UnprocessableEntityException;
+
 public enum Estado {
 
   RECEBIDO(1), //
@@ -31,6 +33,13 @@ public enum Estado {
 
   public int getValorEstado() {
     return this.estado;
+  }
+
+  public void validarTransicaoPara(Estado novo) {
+    if (novo == null || novo.getValorEstado() != this.estado + 1) {
+      throw new UnprocessableEntityException(
+          "Transição de estado inválida: " + this + " -> " + novo);
+    }
   }
 
 }
