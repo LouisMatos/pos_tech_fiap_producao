@@ -121,6 +121,9 @@ jobs:
       - name: Install kubectl
         uses: azure/setup-kubectl@v4
 
+      - name: Install kustomize
+        uses: imranismail/setup-kustomize@v2
+
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name jlapp-cluster-${{ needs.resolve-env.outputs.environment }}
 
@@ -136,6 +139,7 @@ jobs:
           DB_USERNAME=$(echo "$DB_SECRET" | jq -r .username)
           DB_PASSWORD=$(echo "$DB_SECRET" | jq -r .password)
           MQ_HOST=$(echo "$MQ_SECRET" | jq -r .host)
+          MQ_PORT=$(echo "$MQ_SECRET" | jq -r .port)
           MQ_USERNAME=$(echo "$MQ_SECRET" | jq -r .username)
           MQ_PASSWORD=$(echo "$MQ_SECRET" | jq -r .password)
 
@@ -143,6 +147,7 @@ jobs:
           echo "::add-mask::$DB_USERNAME"
           echo "::add-mask::$DB_PASSWORD"
           echo "::add-mask::$MQ_HOST"
+          echo "::add-mask::$MQ_PORT"
           echo "::add-mask::$MQ_USERNAME"
           echo "::add-mask::$MQ_PASSWORD"
 
@@ -154,6 +159,7 @@ jobs:
 
           kubectl create secret generic shared-mq-secret \
             --from-literal=host="$MQ_HOST" \
+            --from-literal=port="$MQ_PORT" \
             --from-literal=username="$MQ_USERNAME" \
             --from-literal=password="$MQ_PASSWORD" \
             --dry-run=client -o yaml | kubectl apply -f -
@@ -168,17 +174,22 @@ jobs:
           IMAGE_FULL="${{ needs.publish.outputs.image }}"
           IMAGE_REPO="${IMAGE_FULL%:*}"
           IMAGE_TAG="${IMAGE_FULL##*:}"
-          cat >> k8s/overlays/${{ needs.resolve-env.outputs.environment }}/kustomization.yaml <<EOF
-          images:
-            - name: jlapp-producao
-              newName: ${IMAGE_REPO}
-              newTag: ${IMAGE_TAG}
-          EOF
+          cd k8s/overlays/${{ needs.resolve-env.outputs.environment }}
+          kustomize edit set image "jlapp-producao=${IMAGE_REPO}:${IMAGE_TAG}"
 
       - name: Deploy via Kustomize
         run: |
           kubectl apply -k k8s/overlays/${{ needs.resolve-env.outputs.environment }}
 
+      - name: Wait for Ingress
+        run: |
+          kubectl wait --for=condition=Programmed ingress/jlapp-producao-ingress -n default --timeout=180s
+
       - name: Smoke test rollout
         run: |
-          kubectl rollout status deployment/jlapp-producao-deployment -n default --timeout=120s
+          kubectl rollout status deployment/jlapp-producao-deployment -n default --timeout=300s
+
+      - name: Smoke test
+        run: |
+          ALB_HOST=$(kubectl get ingress jlapp-producao-ingress -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          curl -sf --max-time 10 "http://${ALB_HOST}/api/v1/producao" -o /dev/null

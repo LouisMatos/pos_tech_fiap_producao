@@ -58,6 +58,7 @@ public class ProducaoUseCase {
   public ProducaoDTO atualizar(ProducaoDTO producaoDTO, String numero_pedido) {
     ProducaoDTO buscaPedidoNumeroPedido = this.buscaPedidoNumeroPedido(numero_pedido);
 
+    buscaPedidoNumeroPedido.getEstado().validarTransicaoPara(producaoDTO.getEstado());
     buscaPedidoNumeroPedido.setEstado(producaoDTO.getEstado());
 
     ProducaoDTO dto = producaoGateway.atualizar(buscaPedidoNumeroPedido);
